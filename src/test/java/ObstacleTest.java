@@ -1,5 +1,4 @@
 import jgame.JGColor;
-import jgame.JGObject;
 import jgame.platform.JGEngine;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

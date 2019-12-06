@@ -9,48 +9,23 @@ import java.util.stream.Stream;
 import static utils.ObjectIdentifier.*;
 
 @SuppressWarnings("serial")
-
 public class Framework extends JGEngine {
 
     public static void main(String[] args) {
-        //new Framework(new JGPoint(640,480));
-        //new Framework(new JGPoint(1024,768));
         new Framework(StdGame.parseSizeArgs(args, 0));
     }
 
     public Framework() {
-        // This inits the engine as an applet.
         initEngineApplet();
     }
 
     public Framework(JGPoint size) {
-        // This inits the engine as an application.
         initEngine(size.x, size.y);
     }
 
     public void initCanvas() {
-        // The only thing we need to do in this method is to tell the engine
-        // what canvas settings to use.  We should not yet call any of the
-        // other game engine methods here!
-        setCanvasSettings(
-                64,  // width of the canvas in tiles
-                48,  // height of the canvas in tiles
-                16,  // width of one tile
-                16,  // height of one tile
-                //    (note: total size = 20*16=320  x  15*16=240)
-                null,// foreground colour -> use default colour white
-                new JGColor(0, 0, 0),// background colour -> use default colour black
-                null // standard font -> use default font
-        );
+        setCanvasSettings(64,48,16,16, null, new JGColor(0, 0, 0),null);
     }
-
-    /**
-     * This method is called when the engine has finished initialising and is
-     * ready to produce frames.  Note that the engine logic runs in its own
-     * thread, separate from the AWT event thread, which is used for painting
-     * only.  This method is the first to be called from within its thread.
-     * During this method, the game window shows the intro screen.
-     */
 
     GameInfo gameInfo = new GameInfo(this);
 

@@ -34,14 +34,12 @@ public class Projectile extends JGObject {
      */
     public void move() {
 
-        // bounce off the borders of the screen.
         if (x > eng.pfWidth() - 8 && xspeed > 0) xspeed = -xspeed;
         if (x < 0 && xspeed < 0) xspeed = -xspeed;
         if (y > eng.pfHeight() - 8 && yspeed > 0) yspeed = -yspeed;
         if (y < 0 && yspeed < 0) yspeed = -yspeed;
-        // xspeed and yspeed are added to x and y automatically at the end
-        // of the move() method.
-    }// bounce off the borders of the screen.
+
+    }
 
     protected void setSpeed() {
         if (x < targetX && xspeed < 0) xspeed = -xspeed;

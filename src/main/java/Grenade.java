@@ -16,7 +16,6 @@ public class Grenade extends Projectile {
 		this.gameUtil = new GameUtilities();
 		this.timer = 90;
 		this.spread = 20;
-		// Grenade spread
 		targetX = x + gameUtil.random(-spread, spread);
 		targetY = y + gameUtil.random(-spread, spread);
 	}

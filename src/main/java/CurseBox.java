@@ -1,5 +1,3 @@
-//Removes a life from every other player.
-
 /**
  * This class represents a CurseBox.
  * It removes a life from every other player

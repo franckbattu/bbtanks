@@ -7,8 +7,9 @@ import javax.swing.JFrame;
 
 import jgame.platform.JGEngine;
 
-//import statements
-//Check if window closes automatically. Otherwise add suitable code
+/**
+ * This class represents all the GUI
+ */
 class GUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;

@@ -42,8 +42,6 @@ public class MapGenerator {
 				placeObject(new Pencil(0, 0, getRandomOrientation(), gameInfo, new Destructible(5)), true);
 			}
 		}
-
-		//printGrid(objectMap); //Prints the board
 	}
 
 	char getRandomOrientation()
@@ -61,31 +59,18 @@ public class MapGenerator {
 		fullObjectMap = clearPath(fullObjectMap);
 		return fullObjectMap;
 	}
-	void printGrid(boolean[][] printMap){
-		for (int j = 0; j < mapHeight; j++) {
-			for (int i = 0; i < mapWidth; i++) {
-				if (printMap[i][j])
-					System.out.print("1,");
-				else
-					System.out.print("0,");
-			}
-			System.out.println();
-		}
-	}
 
 	void findUsableMapForShape(int width, int height){
 		usableMap =  new ArrayList<int[]>();
 		int searchGridX = mapWidth - width;
 		int searchGridY = mapHeight - height;
 
-		// Main grid search
 		for (int i = 0; i < searchGridX; i++) {
 			for (int j = 0; j < searchGridY; j++) {
-				// Shape grid check
 				boolean usable = true;
 				for (int x = 0; x < width; x++) {
 					for (int y = 0; y < height; y++){
-						if (objectMap[i+x][j+y] == false) {
+						if (!objectMap[i + x][j + y]) {
 							usable = false;
 						}
 					}
@@ -112,16 +97,6 @@ public class MapGenerator {
 			return true;
 		} else {
 			return false;
-		}
-	}
-	void printList(ArrayList<int[]> arrayList){
-		for (int[] item : arrayList) {
-			System.out.print("(");
-			System.out.print(item[0]);
-			System.out.print(", ");
-			System.out.print(item[1]);
-			System.out.print(")");
-			System.out.println();
 		}
 	}
 
