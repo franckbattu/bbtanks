@@ -1,15 +1,11 @@
 package utils;
 
-import jgame.platform.JGEngine;
-import lombok.Data;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static utils.ObjectIdentifier.*;
 
-@Data
 public class CheckCollisions {
 
     List<Collision> collisions;
