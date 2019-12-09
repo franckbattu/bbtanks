@@ -4,12 +4,10 @@ import java.util.List;
 import jgame.JGColor;
 import jgame.JGRectangle;
 import jgame.platform.JGEngine;
-import lombok.Data;
 
 /**
  * This class represents all the information of a game
  */
-@Data
 public class GameInfo {
 
 	boolean isTest = false;
@@ -50,5 +48,29 @@ public class GameInfo {
 
 	public List<JGRectangle> getObjects() {
 		return objects;
+	}
+
+	public String getWinner() {
+		return winner;
+	}
+
+	public void setWinner(String winner) {
+		this.winner = winner;
+	}
+
+	public String getLoser() {
+		return loser;
+	}
+
+	public void setLoser(String loser) {
+		this.loser = loser;
+	}
+
+	public boolean isGameLost() {
+		return gameLost;
+	}
+
+	public void setGameLost(boolean gameLost) {
+		this.gameLost = gameLost;
 	}
 }

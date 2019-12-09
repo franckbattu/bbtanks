@@ -19,5 +19,4 @@ public enum ObjectIdentifier {
     ObjectIdentifier(int id) {
         this.id = id;
     }
-
 }

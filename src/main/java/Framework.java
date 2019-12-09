@@ -1,3 +1,4 @@
+import utils.CheckCollisions;
 import utils.Collision;
 import jgame.*;
 import jgame.platform.*;
@@ -11,6 +12,9 @@ import static utils.ObjectIdentifier.*;
 @SuppressWarnings("serial")
 public class Framework extends JGEngine {
 
+    int powerUpCountDown = 200;
+    CheckCollisions checkCollisions;
+
     public static void main(String[] args) {
         new Framework(StdGame.parseSizeArgs(args, 0));
     }
@@ -21,6 +25,7 @@ public class Framework extends JGEngine {
 
     public Framework(JGPoint size) {
         initEngine(size.x, size.y);
+        this.checkCollisions = new CheckCollisions();
     }
 
     public void initCanvas() {
@@ -30,23 +35,12 @@ public class Framework extends JGEngine {
     GameInfo gameInfo = new GameInfo(this);
 
     public void initGame() {
-        setFrameRate(
-                35,// 35 = frame rate, 35 frames per second
-                2  //  2 = frame skip, skip at most 2 frames before displaying
-                //      a frame again
-        );
-
+        setFrameRate(35,2);
         defineMedia("data.tbl");
 
         try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-        }
-
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
+            Thread.sleep(200);
+        } catch (InterruptedException ignored) {
         }
 
         addGameState("GUI");
@@ -59,7 +53,6 @@ public class Framework extends JGEngine {
         gameInfo.pfHeight = pfHeight();
         new GUI(gameInfo, this);
         setGameState("StartGame");
-
     }
 
     public void doFrameStartGame() {
@@ -73,8 +66,12 @@ public class Framework extends JGEngine {
         drawString("Press spacebar to start!", viewWidth() / 2, viewHeight() / 2, 0);
     }
 
+    /**
+     * Initialization of the game
+     * A new random audio is launched
+     * If the game is in test, some boxes are created
+     */
     public void startInGame() {
-        // Music initialization
         new RandomAudio(this);
         if (gameInfo.isTest) {
             new CurseBox(900, 600, gameInfo);
@@ -85,12 +82,9 @@ public class Framework extends JGEngine {
         }
     }
 
-    // Power-Ups
-
-    // 200 is the number of frames before first power-up.
-    int powerUpCountDown = 200;
-
-
+    /**
+     * Spawn all the power ups on the map
+     */
     private void spawnPowerUps() {
         if (!gameInfo.isGameLost()) {
             if (powerUpCountDown <= 0) {
@@ -109,12 +103,15 @@ public class Framework extends JGEngine {
                     new WeaponBox((int) random(0, pfWidth()), (int) random(0, pfHeight()), gameInfo, "grenade-box", "Grenade");
                 }
                 powerUpCountDown += random(50, 1000);
-            } else { // count down.
+            } else {
                 powerUpCountDown--;
             }
         }
     }
 
+    /**
+     * This methods is executed at each frame
+     */
     public void doFrameInGame() {
         if (!gameInfo.isTest) spawnPowerUps();
         this.win();
@@ -126,9 +123,13 @@ public class Framework extends JGEngine {
         }
         // moves all the objects that need to move
         moveObjects(null, 0);
-        this.checkCollisions();
+        this.checkCollisions.getCollisions().forEach(collision -> checkCollision(collision.getFirst(), collision.getSecond()));
     }
 
+    /**
+     * Check if there is a winner
+     * End the game and display some data
+     */
     private void win() {
         if (!gameInfo.isGameLost()) {
             for (Tank tank : this.gameInfo.allTanks) {
@@ -153,24 +154,6 @@ public class Framework extends JGEngine {
         }
     }
 
-    private List<Collision> collisions = Stream.of(
-            new Collision(BED, TANK_PLAYER_1),
-            new Collision(BED, TANK_PLAYER_2),
-            new Collision(HOMING_MISSILE, TANK_PLAYER_1),
-            new Collision(HOMING_MISSILE, TANK_PLAYER_2),
-            new Collision(TANK_PLAYER_1, FLAG),
-            new Collision(TANK_PLAYER_2, FLAG),
-            new Collision(TANK_PLAYER_1, POWER_UP),
-            new Collision(TANK_PLAYER_2, POWER_UP),
-            new Collision(BULLET, OBSTACLE),
-            new Collision(HOMING_MISSILE, OBSTACLE),
-            new Collision(BED, HOMING_MISSILE))
-            .collect(Collectors.toList());
-
-    private void checkCollisions() {
-        this.collisions.forEach(collision -> checkCollision(collision.getFirst(), collision.getSecond()));
-    }
-
 
     /**
      * Any graphics drawing beside objects or tiles should be done here.
@@ -186,13 +169,15 @@ public class Framework extends JGEngine {
         doFrameInGame();
     }
 
+    /**
+     * Creates a panel to show the winner and the looser
+     */
     public void paintFrameGameOver() {
         setColor(gameInfo.winnerColor);
         setFont(new JGFont(null, -1, 54));
         drawString("Game 0ver", viewWidth() / 2, viewHeight() / 2 - 90, 0);
         setFont(new JGFont(null, -1, 24));
         drawString("All " + gameInfo.getLoser() + "'s base are belong to " + gameInfo.getWinner() + ".", viewWidth() / 2, viewHeight() / 2, 0);
-        //	drawString(winner +" you're winner.",viewWidth()/2,viewHeight()/2+26,0);
         drawString("Press space-bar to continue.", viewWidth() / 2, viewHeight() / 2 + 52, 0);
         if (getKey(' ')) {
             gameInfo = new GameInfo(this);

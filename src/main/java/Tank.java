@@ -25,6 +25,8 @@ public abstract class Tank extends JGObject {
     private int primaryFire;
     private int secondaryFire;
     private boolean gotFlag;
+    int startX;
+    int startY;
 
     private int id;
 
@@ -56,6 +58,8 @@ public abstract class Tank extends JGObject {
      */
     Tank(int collisionID, String name, int tankOrientation, int startX, int startY, GameInfo gameInfo) {
         super(name,true, startX, startY, collisionID, "tank_0000");
+        this.startX = startX;
+        this.startY = startY;
         this.id = collisionID;
         this.localInfo = gameInfo;
         this.orientation = tankOrientation;

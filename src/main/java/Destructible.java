@@ -8,7 +8,9 @@ public class Destructible implements Solidity {
 
     @Override
     public void hit() {
-        this.health--;
+        if (this.health > 0) {
+            this.health--;
+        }
     }
 
     @Override
