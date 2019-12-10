@@ -25,4 +25,8 @@ public class CheckCollisions {
                 new Collision(BED, HOMING_MISSILE))
                 .collect(Collectors.toList());
     }
+
+    public List<Collision> getCollisions() {
+        return this.collisions;
+    }
 }
